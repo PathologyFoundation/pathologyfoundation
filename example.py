@@ -1,5 +1,6 @@
 #import pathologyfoundation as pf
 #plip = pf.model_zoo("PLIP-ViT-B-32")
+import pandas as pd
 from model_zoo import model_zoo
 plip = model_zoo("PLIP-ViT-B-32")
 
@@ -24,3 +25,16 @@ The text can be:
 """
 example_text = "An image of colorectal adenocarcinoma."
 text_embeddings = plip.embed_texts(example_text, normalize=True)
+
+
+# Example 3. Fine-tune PLIP as an image classifier
+"""
+df_image_label = pd.DataFrame([{"image": ,"label": 0},
+                               {"image": ,"label": 0},
+                               {"image": ,"label": 0},
+                               {"image": ,"label": 1},
+                               {"image": ,"label": 1},
+                               {"image": ,"label": 1},
+                               ])
+clf = plip.finetune(df_image_label, lr=1e-5, nepochs=100, )
+"""

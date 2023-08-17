@@ -9,8 +9,11 @@ setup(
         "clip-anytorch",
         "pillow>=9.0.1",
         "appdirs",
+        "pandas",
+        "numpy",
+        "tqdm",
     ],
-    version = '0.1.3',  # Ideally should be same as the GitHub release tag varsion
+    version = '0.1.4',  # Ideally should be same as the GitHub release tag varsion
     description="A package of pathology foundation models.",
     long_description=open("README.md").read(),
     author = 'Zhi Huang',
