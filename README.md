@@ -53,20 +53,20 @@ Step 1. Download example data `CRC-VAL-HE-7K`.
 
 ```python
 import pathologyfoundation as pf
-plip = pf.model_zoo("PLIP-ViT-B-32")
-from models import finetuner
 from PIL import Image
 import torch
 import os
+
+plip = pf.model_zoo("PLIP-ViT-B-32")
 df = pf.dataset.load_data.load_example(dataset_name="CRC-VAL-HE-7K")
-df_image_label = df[["image", "label"]].sample(45)
+df_image_label = df[["image", "label"]].sample(45) # Subsample few images in this tutorial.
 print(df_image_label)
 ```
 
 Step 2. Initialize a classifier with PLIP model as backbone.
 
 ```python
-clf = finetuner.FineTuner(backbone=plip.model,
+clf = pf.models.finetuner.FineTuner(backbone=plip.model,
                            preprocess=plip.preprocess,
                            num_classes=len(df_image_label["label"].unique()),
                            freeze_vit=False,
@@ -78,7 +78,7 @@ Step 3. Start training the model.
 
 ```python
 clf.train(df_image_label,
-          validation_split=0,
+          validation_split=0.1,
           batch_size=32,
           num_workers=1,
           lr=1e-5,
@@ -98,7 +98,7 @@ Optional 2: Predict a single image.
 ```python
 image = Image.open(df_image_label["image"].values[0])
 proba = clf.predict(image)
-predicted_class_name = df.loc[df['label'] == torch.argmax(proba).item(), 'class'][0]
+predicted_class_name = df.loc[df['label'] == torch.argmax(proba).item(), 'class'].values[0]
 print(f"Prediction: {predicted_class_name}")
 ```
 

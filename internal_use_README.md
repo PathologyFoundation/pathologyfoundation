@@ -34,5 +34,9 @@ If everything looks good, you can upload your package to PyPI:
 
 
 ```bash
-twine upload --verbose -u __token__ -p $PYPI_API_TOKEN dist/* 
+rm dist/*
+python setup.py sdist bdist_wheel
+twine upload --verbose -u __token__ -p $PYPI_API_TOKEN dist/*
+
+pip install -U pathologyfoundation
 ```

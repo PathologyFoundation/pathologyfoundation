@@ -2,7 +2,6 @@ import pathologyfoundation as pf
 plip = pf.model_zoo("PLIP-ViT-B-32")
 
 # Example 1. Embed image(s)
-import pandas as pd
 
 """
 The image can be:
@@ -30,16 +29,15 @@ text_embeddings = plip.embed_texts(example_text, normalize=True)
 
 
 # Example 3. Fine-tune PLIP as an image classifier
-from models import finetuner
 from PIL import Image
 import torch
 import os
-df = pf.dataset.load_data.load_example(dataset_name="CRC-VAL-HE-7K")
-df_image_label = df[["image", "label"]].sample(45)
 
+df = pf.dataset.load_data.load_example(dataset_name="CRC-VAL-HE-7K")
+df_image_label = df[["image", "label"]].sample(45) # Subsample few images in this tutorial.
 print(df_image_label)
 
-clf = finetuner.FineTuner(backbone=plip.model,
+clf = pf.models.finetuner.FineTuner(backbone=plip.model,
                            preprocess=plip.preprocess,
                            num_classes=len(df_image_label["label"].unique()),
                            freeze_vit=False,
@@ -60,7 +58,7 @@ clf.save_model(os.path.join(pf.utils.get_default_cache_dir(), 'model_statedict_e
 # Predict a single image
 image = Image.open(df_image_label["image"].values[0])
 proba = clf.predict(image)
-predicted_class_name = df.loc[df['label'] == torch.argmax(proba).item(), 'class'][0]
+predicted_class_name = df.loc[df['label'] == torch.argmax(proba).item(), 'class'].values[0]
 print(f"Prediction: {predicted_class_name}")
 
 # Generate image embedding

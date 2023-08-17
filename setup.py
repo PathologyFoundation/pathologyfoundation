@@ -15,12 +15,12 @@ setup(
         "gdown",
         "scikit-learn",
     ],
-    version = '0.1.5',  # Ideally should be same as the GitHub release tag varsion
+    version = '0.1.15',  # Ideally should be same as the GitHub release tag varsion
     description="A package of pathology foundation models.",
-    long_description=open("README.md").read(),
+    long_description="Please check our github page: https://github.com/PathologyFoundation/pathologyfoundation",
     author = 'Zhi Huang',
     author_email = 'hz9423@gmail.com',
-    url = 'https://github.com/PathologyFoundation/PathologyFoundation',
+    url = 'https://github.com/PathologyFoundation/pathologyfoundation',
     keywords = ['Pathology', 'Foundation model', "PLIP", "OpenPath"],
     classifiers=[
         "Programming Language :: Python :: 3",
