@@ -34,5 +34,5 @@ If everything looks good, you can upload your package to PyPI:
 
 
 ```bash
-twine upload dist/*
+twine upload --verbose -u __token__ -p $PYPI_API_TOKEN dist/* 
 ```

@@ -12,8 +12,10 @@ setup(
         "pandas",
         "numpy",
         "tqdm",
+        "gdown",
+        "scikit-learn",
     ],
-    version = '0.1.4',  # Ideally should be same as the GitHub release tag varsion
+    version = '0.1.5',  # Ideally should be same as the GitHub release tag varsion
     description="A package of pathology foundation models.",
     long_description=open("README.md").read(),
     author = 'Zhi Huang',

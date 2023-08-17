@@ -40,7 +40,13 @@ class PLIP_ViT:
     def __init__(self, model_name, device=None, cache_dir=None):
         self.model_name = model_name
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-        self.processor = AutoProcessor.from_pretrained("vinid/plip", cache_dir=cache_dir)
+
+        processor = AutoProcessor.from_pretrained("vinid/plip", cache_dir=cache_dir)
+        def preprocess_wrapper(img):
+            result = processor.image_processor(img)['pixel_values']
+            return result
+        self.preprocess = preprocess_wrapper
+
         self.model = self._load_model(cache_dir)
         
 
@@ -75,13 +81,13 @@ class PLIP_ViT:
             #img.verify()
 
             # Now, preprocess the PIL Image
-            result = self.processor.image_processor(img)['pixel_values']
+            result = self.preprocess(img)
             return result
 
         except (requests.RequestException, ValueError, UnidentifiedImageError, FileNotFoundError) as e:
             raise e
 
-    def preprocess(self, imgs):
+    def preprocess_images(self, imgs):
         corrupted_indices = []
 
         # Handle batched numpy arrays (N * W * H * 3)
@@ -115,7 +121,7 @@ class PLIP_ViT:
     
 
     def embed_images(self, imgs, num_workers=1, batch_size=32, normalize=True):
-        number_of_images, processed_imgs_or_errors = self.preprocess(imgs)
+        number_of_images, processed_imgs_or_errors = self.preprocess_images(imgs)
         
         if isinstance(processed_imgs_or_errors[0], int):  # It's an error list
             if number_of_images == 1:
